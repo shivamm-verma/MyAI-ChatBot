@@ -52,7 +52,7 @@ function App() {
           AI Chat-bot
         </h1>
         <a
-          href="#"
+          href="https://github.com/shivamm-verma/MyAI-ChatBot" target="_blank"
           className="italic font-light text-xl opacity-65 max-[450px]:text-lg"
         >
           made by Shivam Verma
