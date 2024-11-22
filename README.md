@@ -3,10 +3,11 @@ The **MyAI Chatbot** is a personal assistant designed to help you connect with m
 <br>
 
 
-### ➡️ [*Deployed here🖇️*](https://link)
+### ➡️ [*Deployed here()🖇️*](https://myai-chatbot-eight.vercel.app/)
+(https://myai-chatbot-eight.vercel.app/)
 
 ### ➡️ *Logo*
-<img height="100" src="/public/myLogo.png">
+<img height="200" src="/public/myLogo.png">
 
 
 ### What it uses?
@@ -31,6 +32,6 @@ Mobile
 
 ### About this Repository
 
-![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/shivamm-verma/{linkGoesHere})
-![GitHub Repo stars](https://img.shields.io/github/stars/shivamm-verma/{link-goes-here})
-![GitHub commit activity](https://img.shields.io/github/commit-activity/m/shivamm-verma/{linkGoesHere})
+![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/shivamm-verma/MyAI-ChatBot)
+![GitHub Repo stars](https://img.shields.io/github/stars/shivamm-verma/MyAI-ChatBot)
+![GitHub commit activity](https://img.shields.io/github/commit-activity/m/shivamm-verma/MyAI-ChatBot)
