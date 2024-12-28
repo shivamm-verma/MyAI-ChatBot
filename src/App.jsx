@@ -1,6 +1,10 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 
+// To ensure API Key is well Placed in .env file
+// console.log(import.meta.env.VITE_API_KEY)
+
+
 function App() {
   const [count, setCount] = useState(0);
   const [question, setQuestion] = useState("");
@@ -11,7 +15,9 @@ function App() {
     console.log("Loading...");
 
     const myUrl =
-      "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=AIzaSyBTtlnSxUS8osCAavQIfPXVcDMIzvPPds0";
+      "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=" + import.meta.env.VITE_API_KEY;
+    console.log(myUrl);
+    
     const response = await axios({
       url: myUrl,
       method: "post",
@@ -31,13 +37,7 @@ function App() {
     });
     setAnswer(response["data"]["candidates"][0]["content"]["parts"][0]["text"]);
     console.log(answer);
-
-    // useEffect(() => {
-    //   setAnswer(
-    //     response["data"]["candidates"][0]["content"]["parts"][0]["text"]
-    //   );
-    // }, [question]);
-  }
+  } 
 
   return (
     <>
