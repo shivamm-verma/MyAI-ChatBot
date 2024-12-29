@@ -1,6 +1,5 @@
 # Secrets values hiding
-# .secrets.toml
-.streamlit
+.streamlit/secrets.toml
 
 # for hiding venv folder
 venv 

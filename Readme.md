@@ -9,7 +9,6 @@ Ask my [bot](#screenshots) about me, and it will provide you with an answer just
 ![Click Me]("Link")
 
 
-
 ### What it uses?
 - Streamlit (For bringing Application to the user, beautifully)
 - groq API (Most Fastest API)
@@ -21,6 +20,41 @@ Ask my [bot](#screenshots) about me, and it will provide you with an answer just
 - This will also give you my social handles and mail if asked.
 - Responsive design, as deployed by streamlit.
 
+---
+
+### How to setup?
+
+1. Clone the repository:
+   ```sh
+   git clone <repository-url>
+   cd <repository-directory>
+   ```
+2. Create a virtual environment:
+    ```sh
+    python -m venv venv
+    venv\Scripts\activate
+    ```
+3. Install the required dependencies:
+   ```py
+   pip install -r requirements.txt
+   ```
+4. Set up Streamlit secrets:
+   - Create a .streamlit directory in the root of your project.
+   - Inside the .streamlit directory, create a secrets.toml file.
+   - Add your Groq API key to the secrets.toml file:
+    ```toml
+    [secrets]
+    GROQ_API_CHATBOT="yourGroqAPI"
+    SHIVAM_CONTEXT="AddPrivateInfoHere"
+    ```
+5. Run the Streamlit app:
+    ```sh
+    streamlit run Chatbot.py
+    ```
+6. Access the app:
+   - Open your web browser and go to http://localhost:8501.
+
+---
 
 ### 📸Screenshots
 
