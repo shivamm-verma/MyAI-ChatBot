@@ -6,6 +6,7 @@ client = Groq(
     api_key=st.secrets["GROQ_API_CHATBOT"],
     )
 
+# All of the contexts given here
 context = '''
 Here are the context of who i am and my working social handles, mails and 
 what do i actually do, why you should hire me.
