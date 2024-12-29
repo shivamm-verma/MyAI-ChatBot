@@ -5,8 +5,8 @@ Ask my [bot](#screenshots) about me, and it will provide you with an answer just
 <br>
 
 
-### ➡️ *Ask my bot here!⤵️*
-![Click Me]("Link")
+### ➡️ [*Ask my bot here!⤵️*](https://shivamm-verma.streamlit.app/)
+[CLICK ME!](https://shivamm-verma.streamlit.app/)
 
 
 ### What it uses?
