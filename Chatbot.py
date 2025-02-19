@@ -79,41 +79,62 @@ def get_completion(user_question):
 # Web Styling of Streamlit
 st.set_page_config(page_title="Shivam Verma - @shivamm-verma", layout="centered", page_icon="⁉️", )
 
+# st.image("Images/Header_image.jpg")
 st.title("Hey, Shivam Verma's bot here.🙌🏼")
 
 # headline of the page
 st.markdown("""
             
-    Deputy Head @ GDG,MSIT | GSsOC'24 | Open-source Contributor | MSIT'27 | GGSIPU | Hackathons participated(x2)
+    Deputy Head @ GDG,MSIT | Freelancer | GSsOC'24 | Open-source Contributor | MSIT'27 | GGSIPU | Hackathons participated(x3)
             
     My major roles are:
-    - Web Developer
-    - Video Editor (ask for my work)
-    - Freelancers (Reach out to my mail)
-    - You can even ask me to build you this kind of bot, I can help you with that too.
+    - Web Developer🌐
+    - Video Editor (ask for my work)🎥
+    - Freelancer (Reach out to my mail)🫱🏼‍🫲🏼
+    - You can even ask me to build you this kind of bot, I can help you with that too.🤖
     
     All handles: [Links Coming soon, but my GitHub](https://github.com/shivamm-verma)
         
-    Want to Sponsor me?💌: [My GitHub Sponsors](https://github.com/sponsors/shivamm-verma)
+    Want to Sponsor me?💌: [My GitHub Sponsors](https://github.com/sponsors/shivamm-verma) ➕ [PayPal Profile](https://www.paypal.com/paypalme/shivammvermaa)
 """)
 # Will add my social handles/`LinkAll` repo deployed website link here
 
-# Add a sidebar with previous hackathon details and links
+# Adding SIDEBAR DETAILS
 # st.sidebar.title("## Who am I?")
 st.sidebar.markdown("### Who am I?")
 
 # Adding images to the sidebar
 # st.sidebar.image("Images/Shivam_github_card.png")
+
 st.sidebar.image("Images/shivam_pfp.jpg")
 st.sidebar.markdown("""
                     
-    # Shivam Verma               
-    
-                  
+    # Shivam Verma             
+""")
+# For adding logos and link
+st.sidebar.html("""
+<a href="https://github.com/shivamm-verma"><img src="https://cdn.pixabay.com/photo/2022/01/30/13/33/github-6980894_960_720.png" height="34"></a>
+&nbsp;
+<a href="https://www.linkedin.com/in/shivam-verma-332710237/"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/LinkedIn_logo_initials.png/640px-LinkedIn_logo_initials.png" height="34"></a>
 
+<a href="https://x.com/shivamm_verm"><img src="https://cdn.freelogovectors.net/wp-content/uploads/2023/07/twitter_x-logo-freelogovectors.net_.png" height="40"></a>
+&nbsp;
+
+
+""")
+# st.sidebar.markdown("""      
+#     ### My Mail to Contact/Hire me:
+#     - [shivam.verma256@outlook.com](mailto:shivam.verma256@outlook.com)
+#     - [sv35215@gmail.com](mailto:sv35215@gmail.com)
+    
+# """)
+st.sidebar.markdown("""      
     ### My Mail to Contact/Hire me:
-    - [shivam.verma256@outlook.com](mailto:shivam.verma256@outlook.com)
-    - [sv35215@gmail.com](mailto:sv35215@gmail.com)
+                    """)
+st.sidebar.html("""
+<a href="mailto:shivam.verma256@outlook.com"><img src="https://em-content.zobj.net/source/apple/391/inbox-tray_1f4e5.png" height="34">Mail-1 </a>
+&nbsp;&nbsp;&nbsp;&nbsp;
+<a href="mailto:sv35215@gmail.com"><img src="https://em-content.zobj.net/source/apple/391/inbox-tray_1f4e5.png" height="34">Mail-2</a>&nbsp;
     
 """)
 
@@ -123,9 +144,9 @@ st.sidebar.markdown("""___
 
 st.sidebar.markdown("""
     ### Additionally, few of my GitHub Stats:
-    ![Shivam's GitHub stats](https://github-readme-stats.vercel.app/api?username=shivamm-verma&show=reviews,discussions_started,discussions_answered,prs_merged,prs_merged_percentage)  
+    ![Shivam's GitHub stats](https://github-readme-stats.vercel.app/api?username=shivamm-verma&show=reviews,discussions_started,discussions_answered,prs_merged,prs_merged_percentage&theme=dark)  
 
-    ![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=shivamm-verma&layout=pie)
+    ![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=shivamm-verma&layout=pie&theme=dark)
 """)
 
 # Separated by a line
