@@ -7,9 +7,7 @@ client = Groq(api_key=st.secrets["GROQ_API_CHATBOT"])
 # ── System Context ────────────────────────────────────────────────────────────
 SYSTEM_CONTEXT = (
     """
-You are the personal AI assistant of Shivam Verma. Your job is to answer questions about him
-smartly and helpfully — as he would himself. Be slightly casual but professional. Use relevant emojis.
-Be concise. Answer like a sharp personal assistant — short, direct, warm. No filler phrases like "Great question!" or "I'd be happy to". No unnecessary summaries at the end. Use bullet points only when listing multiple things. Use ### headings only when the answer has clear sections. Max 4-5 sentences for simple questions.
+You are the professional AI assistant representing Shivam Verma on his portfolio. Always respond in English unless the user explicitly writes in Hindi — in that case, use Hinglish. Be mature, composed, and articulate. Sound like a real professional assistant, not a chatbot. No filler phrases, no excessive emojis, no robotic sign-offs. Use emojis sparingly and only when naturally fitting. Be concise — 2–4 sentences for simple answers. Use Markdown formatting: **bold** for key terms, bullet lists for multiple items, ### headings only for structured multi-part answers.
 
 CORE RULES:
 - You are Shivam's ASSISTANT, not Shivam himself. Clarify this if asked who you are.
@@ -131,10 +129,10 @@ st.markdown("""
     --bg:        #000000;
     --surface:   #111111;
     --surface2:  #1c1c1e;
+    --text:      #f5f5f7;
     --border:    rgba(255,255,255,0.08);
     --accent:    #0a84ff;
     --accent-glow: rgba(10,132,255,0.18);
-    --text:      #f5f5f7;
     --muted:     #86868b;
     --radius:    16px;
     --radius-sm: 10px;
@@ -194,6 +192,73 @@ html, body, [class*="css"] {
 
 /* ─── Divider ─── */
 .divider { border: none; border-top: 1px solid var(--border); margin: 28px 0; }
+
+/* ─── Chat Bubbles ─── */
+.bubble-row {
+    display: flex;
+    margin: 6px 0;
+    align-items: flex-end;
+    gap: 10px;
+    animation: fadeSlide 0.2s ease;
+}
+.user-row { justify-content: flex-end; }
+.bot-row  { justify-content: flex-start; }
+
+.bubble { max-width: 72%; word-wrap: break-word; font-size: 14.5px; line-height: 1.65; }
+
+.user-bubble {
+    background: var(--accent);
+    color: #fff;
+    padding: 10px 15px;
+    border-radius: 18px 18px 4px 18px;
+    font-weight: 450;
+}
+.bot-bubble {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 13px 16px;
+    border-radius: 18px 18px 18px 4px;
+    max-width: 76%;
+    font-size: 14.5px;
+    line-height: 1.7;
+}
+.bot-bubble p { margin: 0 0 7px !important; }
+.bot-bubble p:last-child { margin-bottom: 0 !important; }
+.bot-bubble h3 { font-size:14px !important; font-weight:600 !important; margin:10px 0 3px !important; color:var(--text) !important; }
+.bot-bubble h3:first-child { margin-top:0 !important; }
+.bot-bubble ul, .bot-bubble ol { margin: 5px 0 7px 16px !important; }
+.bot-bubble li { margin-bottom: 3px !important; }
+.bot-bubble a { color: var(--accent) !important; text-decoration: none !important; }
+.bot-bubble a:hover { text-decoration: underline !important; }
+.bot-bubble strong { font-weight: 600 !important; }
+.bot-bubble code { background: rgba(255,255,255,0.07) !important; padding: 2px 6px !important; border-radius: 4px !important; font-size: 13px !important; }
+.bot-avatar { font-size: 20px; flex-shrink: 0; }
+
+/* ─── Form ─── */
+[data-testid="stForm"] {
+    background: var(--surface) !important;
+    border: 1px solid var(--border) !important;
+    border-radius: var(--radius) !important;
+    padding: 10px 14px !important;
+    margin-top: 14px !important;
+}
+[data-testid="stFormSubmitButton"] > button {
+    background: var(--accent) !important;
+    color: #fff !important;
+    border: none !important;
+    border-radius: var(--radius-sm) !important;
+    font-weight: 600 !important;
+    font-size: 13px !important;
+    padding: 10px 14px !important;
+    width: 100% !important;
+    margin-top: 0 !important;
+    transition: background 0.18s !important;
+}
+[data-testid="stFormSubmitButton"] > button:hover {
+    background: #0071e3 !important;
+    box-shadow: 0 4px 16px rgba(10,132,255,0.28) !important;
+}
 
 /* ─── Text Input ─── */
 .stTextInput > div > div > input {
@@ -322,27 +387,65 @@ st.markdown("""
 
 st.markdown('<hr class="divider">', unsafe_allow_html=True)
 
-# ── Chat Input ────────────────────────────────────────────────────────────────
-user_question = st.text_input(
-    "question",
-    placeholder="e.g. What has Shivam built? Can I hire him for freelancing?",
-    label_visibility="collapsed",
-)
-clicked = st.button("Ask Shivam's Bot →")
+# ── Chat History State ─────────────────────────────────────────────────────────
+if "chat_history" not in st.session_state:
+    st.session_state.chat_history = []
 
-# ── Response ──────────────────────────────────────────────────────────────────
-if clicked:
-    if user_question.strip():
-        with st.spinner("Thinking..."):
-            try:
-                response = get_completion(user_question)
-                st.markdown('<div class="response-card"><div class="response-label">🤖 &nbsp;Shivam\'s Assistant</div></div>', unsafe_allow_html=True)
-                st.markdown(response)
+# ── Render Chat Messages ───────────────────────────────────────────────────────
+chat_container = st.container()
+with chat_container:
+    for msg in st.session_state.chat_history:
+        if msg["role"] == "user":
+            st.markdown(
+                f'<div class="bubble-row user-row">'
+                f'<div class="bubble user-bubble">{msg["content"]}</div>'
+                f'</div>',
+                unsafe_allow_html=True,
+            )
+        else:
+            st.markdown('<div class="bubble-row bot-row"><div class="bot-avatar">🤖</div><div class="bot-bubble">', unsafe_allow_html=True)
+            st.markdown(msg["content"])
+            st.markdown('</div></div>', unsafe_allow_html=True)
 
-            except Exception as e:
-                st.error(f"Something went wrong: {e}")
-    else:
-        st.warning("Please type a question first.")
+# ── Auto-scroll to bottom ──────────────────────────────────────────────────────
+st.markdown("""
+<script>
+    window.scrollTo(0, document.body.scrollHeight);
+</script>
+""", unsafe_allow_html=True)
+
+# ── Input Form (Enter key works) ───────────────────────────────────────────────
+with st.form(key="chat_form", clear_on_submit=True):
+    col1, col2 = st.columns([5, 1])
+    with col1:
+        user_question = st.text_input(
+            "msg",
+            placeholder="Ask anything about Shivam...",
+            label_visibility="collapsed",
+        )
+    with col2:
+        clicked = st.form_submit_button("Send →")
+
+# ── Handle send ────────────────────────────────────────────────────────────────
+if clicked and user_question.strip():
+    st.session_state.chat_history.append({"role": "user", "content": user_question})
+    with st.spinner(""):
+        try:
+            messages = [{"role": "system", "content": SYSTEM_CONTEXT}]
+            for m in st.session_state.chat_history:
+                role = "assistant" if m["role"] == "bot" else "user"
+                messages.append({"role": role, "content": m["content"]})
+            chat_completion = client.chat.completions.create(
+                messages=messages,
+                model="llama-3.3-70b-versatile",
+                max_tokens=1024,
+                temperature=0.7,
+            )
+            response = chat_completion.choices[0].message.content
+            st.session_state.chat_history.append({"role": "bot", "content": response})
+            st.rerun()
+        except Exception as e:
+            st.error(f"Error: {e}")
 
 # ── Sidebar ───────────────────────────────────────────────────────────────────
 st.sidebar.image("Images/shivam_pfp.jpg", use_container_width=True)
@@ -370,19 +473,26 @@ st.sidebar.html("""
      style="display:inline-flex;align-items:center;gap:10px;text-decoration:none;
             background:#1c1c1e;border:1px solid rgba(255,255,255,0.08);
             border-radius:10px;padding:9px 13px;font-size:13px;color:#f5f5f7;font-weight:500;">
-    <img src="https://cdn.simpleicons.org/linkedin/0a66c2" height="18">LinkedIn
-  </a>
-  <a href="https://x.com/shivamm_verm"
-     style="display:inline-flex;align-items:center;gap:10px;text-decoration:none;
-            background:#1c1c1e;border:1px solid rgba(255,255,255,0.08);
-            border-radius:10px;padding:9px 13px;font-size:13px;color:#f5f5f7;font-weight:500;">
-    <img src="https://cdn.simpleicons.org/x/ffffff" height="18">Twitter / X
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/81/LinkedIn_icon.svg/3840px-LinkedIn_icon.svg.png" height="18">LinkedIn
   </a>
   <a href="https://shivamm-vermaportfolio.vercel.app"
      style="display:inline-flex;align-items:center;gap:10px;text-decoration:none;
             background:#1c1c1e;border:1px solid rgba(255,255,255,0.08);
             border-radius:10px;padding:9px 13px;font-size:13px;color:#f5f5f7;font-weight:500;">
     🌐&nbsp;Portfolio
+  </a>
+  <a href="https://leetcode.com/u/shivamm-verma/"
+     style="display:inline-flex;align-items:center;gap:10px;text-decoration:none;
+            background:#1c1c1e;border:1px solid rgba(255,255,255,0.08);
+            border-radius:10px;padding:9px 13px;font-size:13px;color:#f5f5f7;font-weight:500;">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/1/19/LeetCode_logo_black.png" height="18">Leetcode
+  </a>
+  </a>
+  <a href="https://x.com/shivamm_verm"
+     style="display:inline-flex;align-items:center;gap:10px;text-decoration:none;
+            background:#1c1c1e;border:1px solid rgba(255,255,255,0.08);
+            border-radius:10px;padding:9px 13px;font-size:13px;color:#f5f5f7;font-weight:500;">
+    <img src="https://cdn.simpleicons.org/x/ffffff" height="18">Twitter / X
   </a>
 </div>
 """)
@@ -401,7 +511,14 @@ st.sidebar.html("""
      style="display:inline-flex;align-items:center;gap:10px;text-decoration:none;
             background:#1c1c1e;border:1px solid rgba(255,255,255,0.08);
             border-radius:10px;padding:9px 13px;font-size:13px;color:#f5f5f7;font-weight:500;">
-    <img src="https://cdn.simpleicons.org/microsoftoutlook/0078d4" height="18">Outlook
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/Microsoft_Outlook_Icon_%282025%E2%80%93present%29.svg/960px-Microsoft_Outlook_Icon_%282025%E2%80%93present%29.svg.png" height="18">Outlook
+  </a>
+  <a href="mailto:sv35215@gmail.com"
+     style="display:inline-flex;align-items:center;gap:10px;text-decoration:none;
+            background:#1c1c1e;border:1px solid rgba(255,255,255,0.08);
+            border-radius:10px;padding:9px 13px;font-size:13px;color:#f5f5f7;font-weight:500;">
+    <img src="https://files.raycast.com/x100jg3t6b29czgpdggvf3smrl29" height="18">
+    CalCom Meeting&nbsp;<span style="color:#0a84ff;font-size:11px;margin-left:auto;font-weight:600;">Instant</span>
   </a>
 </div>
 """)
@@ -424,10 +541,10 @@ st.sidebar.html("""
 </div>
 """)
 
-st.sidebar.markdown("---")
-st.sidebar.markdown("### GitHub Stats")
-st.sidebar.markdown("""
-![GitHub Stats](https://github-readme-stats.vercel.app/api?username=shivamm-verma&show=prs_merged,prs_merged_percentage&theme=dark&hide_border=true&bg_color=111111)
+# st.sidebar.markdown("---")
+# st.sidebar.markdown("### GitHub Stats")
+# st.sidebar.markdown("""
+# ![GitHub Stats](https://github-readme-stats.vercel.app/api?username=shivamm-verma&show=prs_merged,prs_merged_percentage&theme=dark&hide_border=true&bg_color=111111)
 
-![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=shivamm-verma&layout=pie&theme=dark&hide_border=true&bg_color=111111)
-""")
+# ![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=shivamm-verma&layout=pie&theme=dark&hide_border=true&bg_color=111111)
+# """)
